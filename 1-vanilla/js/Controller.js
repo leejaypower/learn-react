@@ -1,13 +1,13 @@
 const tag = "[Controller]";
 
 export default class Controller {
-  constructor(store, { SearchFormView }) {
-    console.log(tag);
-    console.log(SearchFormView);
+  constructor(store, { searchFormView, searchResultView }) {
+    console.log(tag, "constructor");
 
     this.store = store;
 
-    this.searchFormView = SearchFormView;
+    this.searchFormView = searchFormView;
+    this.searchResultView = searchResultView;
 
     this.subscribeViewEvents();
   }
@@ -19,10 +19,25 @@ export default class Controller {
   }
 
   search(keyword) {
-    console.log(tag, keyword);
+    console.log(tag, "search", keyword);
+
+    this.store.search(keyword);
+    this.render();
   }
 
   reset() {
     console.log(tag, "reset");
+    this.store.searchKeyword = "";
+    this.store.searchResult = [];
+    this.render();
+  }
+
+  render() {
+    if (this.store.searchKeyword.length > 0) {
+      this.searchResultView.show(this.store.searchResult);
+      return;
+    }
+
+    this.searchResultView.hide();
   }
 }

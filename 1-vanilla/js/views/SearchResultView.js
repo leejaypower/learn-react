@@ -1,5 +1,5 @@
-import { qs } from "../helpers";
-import View from "./View";
+import { qs } from "../helpers.js";
+import View from "./View.js";
 
 export default class SearchResultView extends View {
   constructor() {
