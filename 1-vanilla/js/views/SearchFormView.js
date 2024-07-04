@@ -45,4 +45,10 @@ export default class SearchFormView extends View {
     // this.handleKeyup();
     this.emit("@reset");
   }
+
+  show(value = "") {
+    this.inputElement.value = value;
+    this.showResetBtn(this.inputElement.value.length > 0);
+    super.show();
+  }
 }

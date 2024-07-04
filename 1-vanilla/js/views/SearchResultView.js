@@ -26,7 +26,7 @@ class Template {
 
   getList(data = []) {
     return `
-    <ul class="result>
+    <ul class="result">
     ${data.map(this._getItem).join("")}</ul>
     `;
   }
