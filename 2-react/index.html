@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lecture React</title>
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <div id="app"></div>
@@ -20,7 +21,7 @@
 
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <script type="text/babel">
+    <script type="text/babel" src="js/main.js" data-type="module" data-presets="react" />
     //  document.body.innerHTML = '<h2>Jay</h2>'
 
     //  const p = document.createElement('p');
@@ -37,10 +38,6 @@
     //  const element = React.createElement("h1", null, "Hello world");
     //  console.log('react', element); // 리액트 객체 반환
     //  ReactDOM.render(element, document.querySelector("#app"));
-
-
-     const element2 = <h1>Hello world2</h1>
-     ReactDOM.render(element2, document.querySelector('#app'));
     </script>
   </body>
 </html>
