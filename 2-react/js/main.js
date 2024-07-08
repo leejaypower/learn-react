@@ -1,3 +1,5 @@
+import store from "./js/Store.js";
+
 class App extends React.Component {
   // 제어 컴포넌트 (Controlled component)
   constructor() {
@@ -7,6 +9,7 @@ class App extends React.Component {
     this.state = {
       searchKeyword: "",
       searchResult: [],
+      submitted: false,
     };
   }
 
@@ -25,12 +28,19 @@ class App extends React.Component {
 
     this.setState({
       searchKeyword,
+      submitted: true,
     });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     console.log(event, this.state.searchKeyword);
+    this.search(this.state.searchKeyword);
+  }
+
+  search(searchKeyword) {
+    const searchResult = store.search(searchKeyword);
+    this.setState({ searchResult });
   }
 
   handleReset() {
@@ -57,6 +67,44 @@ class App extends React.Component {
       resetBtn = <button type="reset" className="btn-reset"></button>;
     }
 
+    const searchForm = (
+      <form
+        onSubmit={(event) => this.handleSubmit(event)}
+        onReset={() => this.handleReset()}
+      >
+        <input
+          type="text"
+          placeholder="검색어를 입력하든가 말든가~"
+          autoFocus
+          value={this.state.searchKeyword}
+          onChange={(event) => this.handleChangeInput(event)}
+        />
+        {/* 리액트의 element 변수 */}
+        {/* {resetBtn} */}
+
+        {/* 삼항 연산자도 가능 */}
+        {this.state.searchKeyword.length > 0 ? (
+          <button type="reset" className="btn-reset"></button>
+        ) : null}
+      </form>
+    );
+
+    const searchResult =
+      this.state.searchResult.length > 0 ? (
+        <ul className="result">
+          {this.state.searchResult.map((item) => {
+            return (
+              <li key={item.id}>
+                <img src={item.imageUrl} alt={item.title}></img>
+                <p>{item.name}</p>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <div className="empty-box">검색 결과가 없습니다.</div>
+      );
+
     return (
       // 비어있는 태그 - root element처럼 동작하지만 실제 dom에 반영되지 않음
       // - vue의 template tag와 비슷해보임 ?
@@ -65,32 +113,8 @@ class App extends React.Component {
           <h2 className="container">검색</h2>
         </header>
         <div className="container">
-          <form
-            onSubmit={(event) => this.handleSubmit(event)}
-            onReset={() => this.handleReset()}
-          >
-            <input
-              type="text"
-              placeholder="검색어를 입력하든가 말든가~"
-              autoFocus
-              value={this.state.searchKeyword}
-              onChange={(event) => this.handleChangeInput(event)}
-            />
-            {/* 리액트의 element 변수 */}
-            {/* {resetBtn} */}
-
-            {/* 삼항 연산자도 가능 */}
-            {this.state.searchKeyword.length > 0 ? (
-              <button type="reset" className="btn-reset"></button>
-            ) : null}
-          </form>
-          <div className="content">
-            {this.state.searchResult.length > 0 ? (
-              <div>검색 결과</div>
-            ) : (
-              <div className="empty-box">검색 결과가 없습니다.</div>
-            )}
-          </div>
+          {searchForm}
+          <div className="content">{this.state.submitted && searchResult}</div>
         </div>
       </>
     );
