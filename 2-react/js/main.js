@@ -1,4 +1,15 @@
+import { formatRelativeDate } from "./js/helpers.js";
 import store from "./js/Store.js";
+
+export const TabType = {
+  KEYWORD: "KEYWORD",
+  HISTORY: "HISTORY",
+};
+
+const TabLabel = {
+  [TabType.KEYWORD]: "추천 검색어",
+  [TabType.HISTORY]: "최근 검색어",
+};
 
 class App extends React.Component {
   // 제어 컴포넌트 (Controlled component)
@@ -10,7 +21,19 @@ class App extends React.Component {
       searchKeyword: "",
       searchResult: [],
       submitted: false,
+      selectedTab: TabType.KEYWORD,
+      keywordList: [],
+      historyList: [],
     };
+  }
+
+  componentDidMount() {
+    const keywordList = store.getKeywordList();
+    const historyList = store.getHistoryList();
+    this.setState({
+      keywordList,
+      historyList,
+    });
   }
 
   // 리액트에서 이벤트 처리 함수는 관행적으로 handle로 시작한다
@@ -40,7 +63,8 @@ class App extends React.Component {
 
   search(searchKeyword) {
     const searchResult = store.search(searchKeyword);
-    this.setState({ searchResult });
+    console.log(searchResult);
+    this.setState({ searchKeyword, searchResult, submitted: true });
   }
 
   handleReset() {
@@ -48,6 +72,7 @@ class App extends React.Component {
     this.setState({
       searchKeyword: "",
       submitted: false,
+      searchResult: [],
     });
   }
 
@@ -97,6 +122,53 @@ class App extends React.Component {
         <div className="empty-box">검색 결과가 없습니다.</div>
       );
 
+    const keywordList = (
+      <ul className="list">
+        {this.state.keywordList.map(({ id, keyword }, index) => {
+          return (
+            <li key={id} onClick={() => this.search(keyword)}>
+              <span className="number">{index + 1}</span>
+              <span>{keyword}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+
+    const historyList = (
+      <ul className="list">
+        {this.state.historyList.map(({ id, keyword, date }) => {
+          return (
+            <li key={id} onClick={() => this.search(keyword)}>
+              <span>{keyword}</span>
+              <span className="date">{formatRelativeDate(date)}</span>
+              <button className="btn-remove"></button>
+            </li>
+          );
+        })}
+      </ul>
+    );
+
+    const tabs = (
+      <>
+        <ul className="tabs">
+          {Object.values(TabType).map((tabType) => {
+            return (
+              <li
+                className={this.state.selectedTab === tabType ? "active" : ""}
+                key={tabType}
+                onClick={() => this.setState({ selectedTab: tabType })}
+              >
+                {TabLabel[tabType]}
+              </li>
+            );
+          })}
+        </ul>
+        {this.state.selectedTab === TabType.KEYWORD && keywordList}
+        {this.state.selectedTab === TabType.HISTORY && historyList}
+      </>
+    );
+
     return (
       // 비어있는 태그 - root element처럼 동작하지만 실제 dom에 반영되지 않음
       // - vue의 template tag와 비슷해보임 ?
@@ -106,7 +178,9 @@ class App extends React.Component {
         </header>
         <div className="container">
           {searchForm}
-          <div className="content">{this.state.submitted && searchResult}</div>
+          <div className="content">
+            {this.state.submitted ? searchResult : tabs}
+          </div>
         </div>
       </>
     );
