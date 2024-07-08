@@ -22,7 +22,7 @@ class App extends React.Component {
 
     const searchKeyword = event.target.value;
 
-    if (searchKeyword.length <= 0) {
+    if (searchKeyword.length <= 0 && this.state.submitted) {
       return this.handleReset();
     }
 
@@ -45,18 +45,10 @@ class App extends React.Component {
 
   handleReset() {
     // 상태 변경을 알리는 약속 -  ** 항상 비동기로 동작 **
-    // this.setState({
-    //   searchKeyword: "",
-    // });
-
-    this.setState(
-      () => {
-        return { searchKeyword: "" };
-      },
-      () => {
-        console.log("reset", this.state.searchKeyword);
-      }
-    );
+    this.setState({
+      searchKeyword: "",
+      submitted: false,
+    });
   }
 
   render() {
