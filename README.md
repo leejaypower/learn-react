@@ -44,8 +44,9 @@ npx lite-server --baseDir ${폴더 이름}
       - React.Component를 상속해서 만드는 컴포넌트
       - render 메서드로 리액트 element를 반환해서 dom을 만든다.
       - ReactDOM.render() 함수를 이용해 클래스를 element로 전환한다.
+      
     - **함수 컴포넌트**
       - 리액트 element를 반환하는 함수
         - 상속, 생성자, render 메서드도 없어서 코드가 짧고, state가 없다.
         - 내부 상태를 사용할 필요가 없다면 함수 컴포넌트를 이용하면 좋다.
-        
+        - 이 때 변화하는 상태는 props로 받을 수 있다.
