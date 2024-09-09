@@ -1,6 +1,7 @@
 import '../App.css';
 import './Header';
 // vite는 확장자 안 써도됨
+import Register from './Register';
 import { useState } from 'react';
 
 // props나 부모 컴포넌트가 바뀌면 리렌더링
@@ -72,8 +73,9 @@ const Counter = () => {
 function App() {
   return (
     <>
-      <LightButton></LightButton>
-      <Counter></Counter>
+      {/* <LightButton></LightButton>
+      <Counter></Counter> */}
+      <Register></Register>
     </>
   );
 }
