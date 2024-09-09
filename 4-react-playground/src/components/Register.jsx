@@ -1,32 +1,39 @@
 import { useState } from 'react';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [birth, setBirth] = useState('');
-  const [job, setJob] = useState('');
+  const [input, setInput] = useState({
+    name: '',
+    birth: '',
+    job: '',
+  });
 
-  const onChangeName = (event) => {
-    setName(event.target.value);
-  };
-
-  const onChangeBirth = (event) => {
-    setBirth(event.target.value);
-  };
-
-  const onChangeJob = (event) => {
-    setJob(event.target.value);
+  const onChangeInput = (event) => {
+    setInput({
+      ...input,
+      [event.target.name]: event.target.value,
+    });
   };
 
   return (
     <div>
-      <input value={name} onChange={onChangeName} placeholder={'이름'}></input>
+      <input
+        name="name"
+        value={input.name}
+        onChange={onChangeInput}
+        placeholder={'이름'}
+      ></input>
 
       <div>
-        <input value={birth} type="date" onChange={onChangeBirth} />
+        <input
+          name="birth"
+          value={input.birth}
+          type="date"
+          onChange={onChangeInput}
+        />
       </div>
 
       <div>
-        <select value={job} onChange={onChangeJob}>
+        <select name="job" value={input.job} onChange={onChangeInput}>
           <option>전사</option>
           <option>도적</option>
           <option>궁사</option>
