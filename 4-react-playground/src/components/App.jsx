@@ -2,6 +2,7 @@ import '../App.css';
 import './Header';
 // vite는 확장자 안 써도됨
 import Register from './Register';
+import HookExam from './HookExam';
 import { useState } from 'react';
 
 // props나 부모 컴포넌트가 바뀌면 리렌더링
@@ -75,7 +76,8 @@ function App() {
     <>
       {/* <LightButton></LightButton>
       <Counter></Counter> */}
-      <Register></Register>
+      {/* <Register></Register> */}
+      <HookExam></HookExam>
     </>
   );
 }
