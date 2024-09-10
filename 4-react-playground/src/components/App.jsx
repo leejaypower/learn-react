@@ -3,7 +3,7 @@ import './Header';
 // vite는 확장자 안 써도됨
 import Register from './Register';
 import HookExam from './HookExam';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // props나 부모 컴포넌트가 바뀌면 리렌더링
 // => 관련이 없다면 state를 몰아넣지 말고 분리해서 불필요한 리렌더링 방지
@@ -55,14 +55,27 @@ const Counter = () => {
   //  console.log(state); --> state[0]: state의 값, state[1]: 상태 변화함수
 
   // 따라서 구조 분해하는게 일반적임!
-  const [state, setCount] = useState(0);
+  const [count, setCount] = useState(0);
+
+  // 배열의 값이 들어가게 되면 첫번째 인수의 콜백 함수 실행
+  useEffect(() => {
+    console.log(count);
+  }, [count]);
+
+  // unMount
+  useEffect(() => {
+    // 클린업, 정리함수
+    return () => {
+      console.log('unMount');
+    };
+  }, []);
 
   return (
     <div>
-      <h1>{state}</h1>
+      <h1>{count}</h1>
       <button
         onClick={() => {
-          setCount(state + 1);
+          setCount(count + 1);
         }}
       >
         +
@@ -72,6 +85,22 @@ const Counter = () => {
 };
 
 function App() {
+  const isMount = useRef(false);
+
+  // mount - 최초로 컴포넌트가 마운트 될 때 한 번만 호출
+  useEffect(() => {
+    console.log('mount');
+  }, []);
+
+  // update - 두 번째 인수를 생략. 리렌더링 될 때마다 실행됨
+  useEffect(() => {
+    if (!isMount.current) {
+      isMount.current = true;
+      return;
+    }
+    console.log('update');
+  });
+
   return (
     <>
       {/* <LightButton></LightButton>
