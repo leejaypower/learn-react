@@ -1,4 +1,4 @@
-import { useReducer, useMemo } from 'react';
+import { useReducer, useMemo, useCallback } from 'react';
 import useInput from '../hooks/useInput';
 
 const HookExam = () => {
@@ -28,20 +28,20 @@ const Exam = () => {
   // dispatch - 상태 변화가 있어야 한다는 사실을 알리는, 발송하는 함수
   const [state, dispatch] = useReducer(reducer, 0);
 
-  const onClickPlus = () => {
+  const onClickPlus = useCallback(() => {
     // dispatch의 인수 : 상태가 어떻게 변화되길 원하는지 - 액션 객체
     dispatch({
       type: 'INCREASE',
       data: 1,
     });
-  };
+  }, []);
 
-  const onClickMinus = () => {
+  const onClickMinus = useCallback(() => {
     dispatch({
       type: 'MINUS',
       data: 1,
     });
-  };
+  }, []);
 
   return (
     <div>

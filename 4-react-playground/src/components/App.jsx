@@ -3,7 +3,7 @@ import './Header';
 // vite는 확장자 안 써도됨
 import Register from './Register';
 import { Exam, HookExam } from './HookExam';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 // props나 부모 컴포넌트가 바뀌면 리렌더링
 // => 관련이 없다면 state를 몰아넣지 말고 분리해서 불필요한 리렌더링 방지
@@ -100,6 +100,11 @@ function App() {
     }
     console.log('update');
   });
+
+  // (최적화를 하고 싶은 함수, 종속성 배열)
+  // 첫 번째 인수의 함수를 그대로 반환함
+  // 의존성 배열의 값이 변경되었을 때 다시 생성하여 최적화 -> 즉 **함수를 메모이제이션**
+  const func = useCallback(() => {}, []);
 
   return (
     <>
