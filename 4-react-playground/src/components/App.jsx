@@ -3,7 +3,7 @@ import './Header';
 // vite는 확장자 안 써도됨
 import Register from './Register';
 import { Exam, HookExam } from './HookExam';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, createContext } from 'react';
 
 // props나 부모 컴포넌트가 바뀌면 리렌더링
 // => 관련이 없다면 state를 몰아넣지 말고 분리해서 불필요한 리렌더링 방지
@@ -84,6 +84,9 @@ const Counter = () => {
   );
 };
 
+// 일반적으로 context는 컴포넌트 외부에 선언 - 리렌더링으로 인한 중복 생성 방지
+export const context = createContext();
+
 function App() {
   const isMount = useRef(false);
 
@@ -112,7 +115,10 @@ function App() {
       <Counter></Counter> */}
       {/* <Register></Register> */}
       {/* <HookExam></HookExam> */}
-      <Exam></Exam>
+      {/* provider안에 감싸진 모든 컴포넌트들은 context의 데이터를 공급받을 수 있게된다. */}
+      <context.Provider value={func}>
+        <Exam></Exam>
+      </context.Provider>
     </>
   );
 }

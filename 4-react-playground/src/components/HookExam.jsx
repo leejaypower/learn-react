@@ -1,5 +1,6 @@
-import { useReducer, useMemo, useCallback } from 'react';
+import { useReducer, useMemo, useCallback, useContext } from 'react';
 import useInput from '../hooks/useInput';
+import { context } from './App';
 
 const HookExam = () => {
   const [input, onChange] = useInput();
@@ -25,6 +26,9 @@ function reducer(state, { type, data }) {
 }
 
 const Exam = () => {
+  // 인수로 주어진 context로부터 공급된 데이터를 반환해주는 useContext
+  const data = useContext(context);
+
   // dispatch - 상태 변화가 있어야 한다는 사실을 알리는, 발송하는 함수
   const [state, dispatch] = useReducer(reducer, 0);
 
