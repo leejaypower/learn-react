@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useMemo } from 'react';
 import useInput from '../hooks/useInput';
 
 const HookExam = () => {
@@ -50,6 +50,16 @@ const Exam = () => {
       <button onClick={onClickMinus}>-</button>
     </div>
   );
+};
+
+const Exam2 = () => {
+  // 최초로 컴포넌트가 렌더링될 때 실행. 이후에는 의존성 배열이 변경되었을 때 콜백 함수 실행
+  // 콜백 함수가 반환하는 값을 그대로 반환
+  const a = useMemo(() => {
+    return 1;
+  }, []);
+
+  // 두 번째 인수로 전달한 deps를 기준으로 메모이제이션
 };
 
 export { HookExam, Exam };
