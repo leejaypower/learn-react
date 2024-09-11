@@ -21,6 +21,7 @@ module.exports = {
     // 실습을 자유롭게 하기 위한 설정 추가
     'no-unused-vars': 'off',
     'react/prop-types': 'off',
-    "quotes": [2, 'single']
+    "quotes": [2, 'single'],
+    'react-refresh/only-export-components': 'off',
   },
 }
