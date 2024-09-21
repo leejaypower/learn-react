@@ -1,5 +1,8 @@
 import '../App.css';
 import './Header';
+import { Routes, Route } from 'react-router-dom';
+import Home from '../pages/Home';
+import NewPage from '../pages/NewPage';
 // vite는 확장자 안 써도됨
 import Register from './Register';
 import { Exam, HookExam } from './HookExam';
@@ -110,16 +113,19 @@ function App() {
   const func = useCallback(() => {}, []);
 
   return (
-    <>
-      {/* <LightButton></LightButton>
-      <Counter></Counter> */}
-      {/* <Register></Register> */}
-      {/* <HookExam></HookExam> */}
-      {/* provider안에 감싸진 모든 컴포넌트들은 context의 데이터를 공급받을 수 있게된다. */}
-      <context.Provider value={func}>
-        <Exam></Exam>
-      </context.Provider>
-    </>
+    // <>
+    //   {/* <LightButton></LightButton>
+    //   <Counter></Counter> */}
+    //   {/* <Register></Register> */}
+    //   {/* <HookExam></HookExam> */}
+    //   {/* provider안에 감싸진 모든 컴포넌트들은 context의 데이터를 공급받을 수 있게된다. */}
+    //   <context.Provider value={func}>
+    //     <Exam></Exam>
+    //   </context.Provider>
+    // </>
+    <Routes>
+      <Route path="/" element={}></Route>
+    </Routes>
   );
 }
 
