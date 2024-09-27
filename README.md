@@ -148,10 +148,50 @@
 - **연관된 상태 단순화하기**
   - `Keep IT Simple Stupid`
   - 상태를 만들 때 연관된 것들끼리 묶어서 처리하면 에러를 방지하고 코드가 간결해진다.
-  - 연관된 상태를 객체로 묶어서 useReducer 사용하기
-  - 혹은 열거형 데이터로 만들어보기
+  - 열거형 데이터로 만들어보기
   ```javascript
   const [promiseState, setPromiseState] = useState<
     'loading', 'finish', 'error'
   >('pending')
   ```
+  - 연관된 상태를 객체로 묶기 - 하나의 상태를 무조건 하나의 useState로 만들 필요는 없다.
+  ```javascript
+  const [fetchState, setFetchState] = useState({
+    isLoading: false,
+    isFinish: false,
+    isError: false,
+  })
+  ```
+- **useState 대신 useReducer가 필요한 경우**
+  - 상태를 구조화할 필요가 있을 때, 상태를 세밀하게 조작할 때
+  ```javascript
+  const [state, dispatch] = useReducer(reducer, INIT_STATE)
+  
+  const reducer = (state, action) => {
+    // reducer 안에서는 switch문 사용을 추천
+    switch (action.type) {
+      case 'FETCH_LOADING':
+
+       // reducer를 사용할 때는 이전 상태값에 대한 보장이 없을 수도 있을까? 그래서 상태 값을 하나 하나 지정하는게 더 나을수도
+       // return {...state, isLoading: true }
+      return { isLoading: true, isSuccess: false, isFail: false }
+
+      case 'FETCH_SUCCESS':
+        return {...state, isSuccess: true }
+
+      case 'FETCH_FAIL':
+        return {...state, isFail: true }
+
+      default:
+        return INIT_STATE
+        break;
+    }
+  }
+
+  ///
+  dispatch({type: 'FETCH_LOADING'})
+  ```
+  - react에 의존적인 코드가 아니라서 여러 곳에서 재사용 가능하다는 장점
+  - 내부 로직이 추상화되고 호출부에서 추론 가능
+  - 서드파티 없이 상태 관리할 때도 유용
+
