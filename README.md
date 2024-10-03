@@ -101,97 +101,11 @@
 
 
 ### 3. React를 위한 clean code
-- **올바른 상태 초기값을 설정하자**
-  ```javascript
-  const [state, setState] = useState(); // warning!
-  ```
-   - 초기에 렌더링 되는 값 : 가장 먼저 순간적으로 보여질 수도 있는 값
-   - 렌더링 이슈, 무한 루프, 타입 불일치로 의도치 않는 동작 -> 런타임 에러
-   - 넣지 않으면 undefined, 상태값 초기화에도 실수가 나올 수 있다.
+1. [state](./5-clean-code//state.md)
+2. [props](./5-clean-code//props.md)
+3. [components](./5-clean-code//components.md)
+4. [rendering](./5-clean-code//rendering.md)
+5. [hooks](./5-clean-code//hooks.md)
+6. [etc](./5-clean-code//etc.md)
 
-- **업데이트 되지 않는 일반 객체라면 컴포넌트 외부로 추출하자**
-  ```javascript
-  export const component = () => {
-    const INFO = {
-      a: 'a',
-      b: 'b'
-    };
-
-    return <MyComp info={INFO}></MyComp>
-  }
-  ```
-  - 위처럼 일반적으로 상수를 다루는 경우 매번 렌더링될 때마다 같은 값이더라도 불필요하게 참조하고 갖고 있음
-  - 컴포넌트 내부에 변수를 만들 때는 렌더링마다 고유의 값을 가질 수도 있는 값인지 아닌지를 판단하기 (vue의 computed 처럼 렌더링마다 재계산되는지)
-  - 업데이트 되지 않는 일반 값을 다룬다면 상태로 바꾸거나(필요시 판단), 외부로 추출하는 것이 좋음
-
-- **플래그 상태로 바꾸기**
-  ```javascript
-  function FlagState() : Element {
-    const isLogin = hasToken
-    && hasCookie
-    && isValidCookie
-    && !isNewUser
-    && isValidToken
-    && 추가적인 요구사항
-
-    return <div>{isLogin && '안녕하세요!'}</div>
-  }
-  ```
-  - 굳이 상태를 만들 필요가 없어보일 때는 useState()를 만들지 말고 컴포넌트 내부의 변수를 활용하자
-
-- **리렌더링 방지가 필요하다면 useState 대신 useRef**
-  - 컴포넌트의 전체적인 수명과 동일하게 지속된 정보를 일관적으로 제공해야하는 경우
-  - 예를 들어 isMount와 같이 mount 여부를 확인하는 변수를 만들때 useEffect와 함께 useRef를 사용하자
-  - useRef 가 DOM에만 붙일 수 있는 api가 아니다! 불필요한 렌더링 방지에 효과적임
-
-
-- **연관된 상태 단순화하기**
-  - `Keep IT Simple Stupid`
-  - 상태를 만들 때 연관된 것들끼리 묶어서 처리하면 에러를 방지하고 코드가 간결해진다.
-  - 열거형 데이터로 만들어보기
-  ```javascript
-  const [promiseState, setPromiseState] = useState<
-    'loading', 'finish', 'error'
-  >('pending')
-  ```
-  - 연관된 상태를 객체로 묶기 - 하나의 상태를 무조건 하나의 useState로 만들 필요는 없다.
-  ```javascript
-  const [fetchState, setFetchState] = useState({
-    isLoading: false,
-    isFinish: false,
-    isError: false,
-  })
-  ```
-- **useState 대신 useReducer가 필요한 경우**
-  - 상태를 구조화할 필요가 있을 때, 상태를 세밀하게 조작할 때
-  ```javascript
-  const [state, dispatch] = useReducer(reducer, INIT_STATE)
-  
-  const reducer = (state, action) => {
-    // reducer 안에서는 switch문 사용을 추천
-    switch (action.type) {
-      case 'FETCH_LOADING':
-
-       // reducer를 사용할 때는 이전 상태값에 대한 보장이 없을 수도 있을까? 그래서 상태 값을 하나 하나 지정하는게 더 나을수도
-       // return {...state, isLoading: true }
-      return { isLoading: true, isSuccess: false, isFail: false }
-
-      case 'FETCH_SUCCESS':
-        return {...state, isSuccess: true }
-
-      case 'FETCH_FAIL':
-        return {...state, isFail: true }
-
-      default:
-        return INIT_STATE
-        break;
-    }
-  }
-
-  ///
-  dispatch({type: 'FETCH_LOADING'})
-  ```
-  - react에 의존적인 코드가 아니라서 여러 곳에서 재사용 가능하다는 장점
-  - 내부 로직이 추상화되고 호출부에서 추론 가능
-  - 서드파티 없이 상태 관리할 때도 유용
 
