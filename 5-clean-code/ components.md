@@ -4,10 +4,10 @@
 
 - **self-closing-tag**
     - 명시적으로 닫는 태그가 필요 없는 태그
-    ```jsx
-    <Img></Img>
-    <Img />
-    ```
+        ```jsx
+        <Img></Img>
+        <Img />
+        ```
 
     - 실수를 방지하기 위해 컴포넌트명은 커스텀 컴포넌트인지 기본 HTML 요소인지 아닌지의 명확한 차이를 가져야한다. (PascalCase vs lower case)
     - 리액트 컴포넌트라면 자식 노드(자식 컴포넌트)같은 그 하위에 HTML 관련된 무언가가 아무것도 존재하지 않는다면 닫는 태그를 위와 같이 생략하자 
@@ -17,15 +17,15 @@
 - **Fragment 지향하기**
     - Fragment : React v16.2 부터 사용
         - DOM에 별도의 노드를 추가하지 않고 여러 자식을 그룹화할 수 있다
-    ```jsx
-    return (
-        <React.Fragment>
-            <ChildA />
-            <ChildB />
-            <ChildC />
-        </React.Fragment>
-    );
-    ```
+        ```jsx
+        return (
+            <React.Fragment>
+                <ChildA />
+                <ChildB />
+                <ChildC />
+            </React.Fragment>
+        );
+        ```
     - JSX에서는 단일 요소가 아닌 노드를 반환할 수 없어서 무조건 div와 같은 태그로 감싸서 내보내곤 했다.
     - 이를 보완하기 위한 `React.Fragment`
     - fragment Shortcut
@@ -41,16 +41,16 @@
 - **Fragment 지양하기**
     - 루트 컴포넌트가 싱글일 경우 굳이 쓰지 않기
     - 아래의 경우를 봐보자
-    ```jsx
-        return (
-            <div>
-                <h1>{ isLoggedIn ? 'User' : <></> }</h1> // 굳이 fragment를 반환할 필요 없음
-                <h1>{ isLoggedIn ? 'User' : null }</h1> // 명시적으로 null을 반환하거나
-                <h1>{ isLoggedIn && 'User' }</h1> 
-                { isLoggedIn && <h1>User</h1> } // 이런 식으로 써도 좋다
-            </div>
-        )
-    ```
+        ```jsx
+            return (
+                <div>
+                    <h1>{ isLoggedIn ? 'User' : <></> }</h1> // 굳이 fragment를 반환할 필요 없음
+                    <h1>{ isLoggedIn ? 'User' : null }</h1> // 명시적으로 null을 반환하거나
+                    <h1>{ isLoggedIn && 'User' }</h1> 
+                    { isLoggedIn && <h1>User</h1> } // 이런 식으로 써도 좋다
+                </div>
+            )
+        ```
 
 - **JSX 컴포넌트안에 함수를 반환해서 렌더링하는 경우 지양**
     - 또한 jsx 컴포넌트를 store나 util 함수에 넣는 것 지양
@@ -80,4 +80,22 @@
     - 차라리 한 파일 내에 두 개의 컴포넌트(컴포넌트 외부에)를 작성하는게 어떨까? 
 
 - **displayName**
+    - react devtool을 사용할 때 컴포넌트 이름이 anonymous로 표기되는 경우, displayName을 넣어 확인하자.
 
+        ```javascript
+            const name = Component.displayName ?? Component.name ?? 'AComponent'
+        ```
+
+    - ref를 forward 할 때 생기는 현상 ([forwardRef](https://ko.react.dev/reference/react/forwardRef#reference))
+
+        ```javascript
+        const InputText = forwardRef((props, ref) : Element => {
+            return <input type="text" ref={ref} />
+        })
+
+        InputText.displayName = 'inputText';
+        ```
+
+    - 익명 함수로 컴포넌트를 만들었을 때
+    - 고차 함수(HOC)를 사용할 때도 동적으로 바인딩되기 때문에 사용하면 유용
+    - 확장성이 높은 컴포넌트를 디버깅하기 쉽게~
