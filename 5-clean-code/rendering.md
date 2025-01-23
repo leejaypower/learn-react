@@ -27,17 +27,8 @@
   </ul>
   ```
 
-  ```jsx
-  // 리액트 컴포넌트는 props, setState 등 다양한 변화를 감지해서 여러번 렌더링을 하는데, 렌더링될 때마다 고유의 값을 계속해서 찍어내게 되기 때문에 좋지 않다!!
-  <ul>
-    {list.map((item, index) => (
-      <li key={new Date().toString()}>{item}</li>
-    ))}
-  </ul>
-  ```
-
     ```jsx
-  // 클릭했을 때 동일한 아이디 보장되지 않음
+  // 이 경우 클릭했을 때 동일한 아이디 보장되지 않음
   <ul>
     {list.map((item, index) => (
       <li key={uuidv4()} onClick={() => handleDelete(uuidv4())}>{item}</li>
@@ -47,9 +38,10 @@
 
   ```jsx
   // item의 id 값을 넣자 (서버에서 받는 고유한 값 or 컴포넌트 내에서 해당 아이템에 대한 id 부여)
+  // 클라에서 id값을 넣을 때는... symbol 혹은 crypto 활용하면 좋을 것 같다
   <ul>
     {l ist.map((item, index) => (
-      <li key={item.id} onClick={() => handleDelete(uuidv4())}>{item}</li>
+      <li key={item.id} onClick={() => handleDelete(item.id)}>{item}</li>
     ))}
   </ul>
   ```
