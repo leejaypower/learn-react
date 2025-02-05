@@ -47,26 +47,26 @@
     ```
 
  ### 안전하게 Raw HTML 다루기
-    1. 렌더링 될 데이터
-    2. 유저가 다시 한 번 입력모드로 수정할 수 있는 데이터 - input, textarea
+  1. 렌더링 될 데이터
+  2. 유저가 다시 한 번 입력모드로 수정할 수 있는 데이터 - input, textarea
+  
+  ```jsx
+  const SERVER_DATA = '<p>some raw html</p>'
+  const markup = {__html: SERVER.DATA};
 
-    ```jsx
-    const SERVER_DATA = '<p>some raw html</p>'
-    const markup = {__html: SERVER.DATA};
+  // XSS에 매우 취약한 큰일나는 코드 
+  return <div>{markup}</div>
 
-    // XSS에 매우 취약한 큰일나는 코드 
-    return <div>{markup}</div>
-
-    // 좀 더 안전해졌다..하지만 수정의 경우는?
-    return <div dangerouslySetInnerHTML={markup}></div>
-    ```
+  // 좀 더 안전해졌다..하지만 수정의 경우는?
+  return <div dangerouslySetInnerHTML={markup}></div>
+  ```
     
-    ```jsx
-    // DOMPurify 사용
-    const sanitizeContent = {__html: DOMPurify.sanitize(SERVER.DATA)};
-    setContentHTML(DOMPurify.sanitize(SERVER_DATA))
+  ```jsx
+  // DOMPurify 사용
+  const sanitizeContent = {__html: DOMPurify.sanitize(SERVER.DATA)};
+  setContentHTML(DOMPurify.sanitize(SERVER_DATA))
 
-    <div dangerouslySetInnerHTML={sanitizeContent}></div>
-    ```
+  <div dangerouslySetInnerHTML={sanitizeContent}></div>
+  ```
 
-    HTML sanitizer API도 나와있지만 아직 브라우저 지원이 미비한 상황이다.
+HTML sanitizer API도 나와있지만 아직 브라우저 지원이 미비한 상황이다.
