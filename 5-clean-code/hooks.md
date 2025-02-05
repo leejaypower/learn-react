@@ -148,3 +148,32 @@
       }, [token, options])
     }
   ```
+
+### useEffect() 내부의 비동기
+  - `async` `await`은 useEffect에서 사용할 수가 없다.
+  - `useEffect`의 콜백 함수는 클린업 함수 혹은 undefined를 반환
+  - `async/await`, `promise` 들은 promise 를 반환하기 때문에 예상치 못하는 코드가 실행될 수 있다.
+  - fetchData가 실행되는 동안 컴포넌트가 언마운트되면 응답을 받아도 상태를 업데이트하면 안되는데 실행되는 등
+    ```jsx
+    // 불가
+    useEffect(async () => {
+      const result = await fetchData();
+    }, []) 
+    ```
+  - **리액트에서 통신 로직 및 상태는 `tanstackQuery`를 통해서 관리하는 것이 권장됨.** 하지만 써야한다면...
+    ```jsx
+    useEffect(() => {
+      let isMounted = true; // cleanup을 위한 플래그
+
+      // 내부에서 async/await을 호출, 혹은 즉시 실행 함수를 따로 만들어서 호출
+      // useEffect 자체는 동기적으로 실행되도록
+      const fetchData = async () => {
+        const result = await someFetch();
+      }
+      fetchData();
+
+      return () => {
+        isMounted = false; // 컴포넌트 언마운트 시 상태 업데이트 방지
+      };
+    }, [dependency]) 
+    ```
