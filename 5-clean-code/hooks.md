@@ -169,6 +169,9 @@
       // useEffect 자체는 동기적으로 실행되도록
       const fetchData = async () => {
         const result = await someFetch();
+        if (isMounted) {
+          setstate(result);
+        }
       }
       fetchData();
 
@@ -176,4 +179,19 @@
         isMounted = false; // 컴포넌트 언마운트 시 상태 업데이트 방지
       };
     }, [dependency]) 
+    ```
+
+    ```jsx
+    // 응답 자체를 취소하는게 더 권장됨
+    useEffect(() => {
+      const controller = new AbortController();
+    
+      const fetchData = async () => {
+        const result = await someFetch({ signal: controller.signal });
+        setState(result);
+      }
+      fetchData();
+    
+      return () => controller.abort(); // 요청 자체를 취소
+    }, [dependency]);
     ```
